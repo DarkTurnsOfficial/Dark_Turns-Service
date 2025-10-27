@@ -2,10 +2,11 @@ FROM node:20-alpine
 
 RUN apk add --no-cache git
 
-RUN git clone https://github.com/Arkhavis/Interstellar.git
+RUN git clone https://github.com/DarkTurnsOfficial/Vortex-Nexus-X.git
 
 WORKDIR /Interstellar
 
 RUN npm install
 
 CMD npm start
+
