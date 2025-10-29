@@ -1,5 +1,6 @@
 services:
   - type: web
-    name: Basket-Service
+    name: Vortex-Nexus-X
     env: docker
     plan: free
+
