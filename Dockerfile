@@ -3,8 +3,12 @@ FROM node:20-alpine
 # Install git
 RUN apk add --no-cache git
 
-# Clone your MAIN repository (Vortex-Nexus-X)
-RUN git clone https://github.com/DarkTurnsOfficial/Vortex-Nexus-X.git
+# Clone the repository (use a variable to force rebuild on push)
+ARG GIT_COMMIT=unknown
+RUN echo "Cloning at commit: ${GIT_COMMIT}" && \
+    git clone https://github.com/DarkTurnsOfficial/Vortex-Nexus-X.git && \
+    cd Vortex-Nexus-X && \
+    git pull origin main
 
 # Set working directory
 WORKDIR /Vortex-Nexus-X
@@ -12,15 +16,11 @@ WORKDIR /Vortex-Nexus-X
 # Install dependencies
 RUN npm install
 
-# Expose the port (Render will override with PORT env var)
+# Expose port
 EXPOSE 8080
 
-# Set production environment
+# Production environment
 ENV NODE_ENV=production
-
-# Health check to help Render know when app is ready
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:' + (process.env.PORT || 8080), (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
 # Start the application
 CMD ["npm", "start"]
